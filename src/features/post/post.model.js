@@ -15,6 +15,16 @@ export default class PostModel{
         return post
     }
 
+    static get(id){
+        const post = posts.find((p) => p.id == id);
+        return post;
+    }
+
+    static usersPost(userId){
+        const post = posts.find((p) => p.userId == userId);
+        return post;
+    }
+
 }
 
 
