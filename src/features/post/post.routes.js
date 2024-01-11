@@ -3,10 +3,21 @@ import express from 'express';
 import PostController from './post.controller.js';
 
 
-const router = express.Router();
+const postrouter = express.Router();
 const postController = new PostController();
 
-router.get('/', postController.getAllPosts);
-router.post('/', upload.single('imageUrl'), postController.addPost);
+postrouter.get('/all', postController.getAllPosts);
+postrouter.get('/:id', postController.getPostById);
+postrouter.get('/', postController.getUsersPost);
+// postrouter.get('/userCredent')
 
-export default router;
+
+postrouter.post('/', upload.single('imageUrl'), postController.addPost);
+
+
+postrouter.put('/:id', upload.single('imageUrl'), postController.updatePost);
+
+
+postrouter.post('/comment', postController.commentOnPost);
+postrouter.delete('/:id', postController.delete)
+export default postrouter;

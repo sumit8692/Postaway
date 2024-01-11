@@ -1,40 +1,98 @@
 import PostModel from "./post.model.js";
 
 export default class PostController {
-    getAllPosts(req, res){
-        const posts = PostModel.getall();
+    getAllPosts(req, res) {
+        const posts = PostModel.getAll();
         res.status(200).send(posts);
     }
-    addPost(req, res){
-        
-        const { userId, caption, } = req.body;
-        const newpost = { userId, caption, image: req.file.filename};
-        const postcreated = PostModel.add(newpost);
-        res.status(201).send(postcreated);
 
+    addPost(req, res) {
+        const { userId, caption } = req.body;
+        const newPost = { userId, caption, image: req.file.filename };
+        const postCreated = PostModel.add(newPost);
+        res.status(201).send(postCreated);
     }
 
-    getPostById(req, res){
+    getPostById(req, res) {
         const id = req.params.id;
-
         const post = PostModel.get(id);
 
-        if(!post){
+        if (!post) {
             res.status(404).send('Post not found');
-        }
-        else{
-            return res.status(200).send(post);
+        } else {
+            res.status(200).send(post);
         }
     }
 
-    static getUsersPost(req, res){
+    getUsersPost(req, res) {
         const userId = req.query.userId;
-        const allposts = PostModel.usersPost(userId);
-        if(!userId){
-            res.status(404).send("User not Found");
+        
+        if (!userId) {
+            res.status(404).send("User not found");
+        } else {
+            const userPosts = PostModel.usersPost(userId);
+            res.status(200).send(userPosts);
+        }
+    }
+
+     updatePost(req, res) {
+        const postId = req.params.id; // Assuming the post ID is in the URL parameters
+        const { userId, caption } = req.body;
+    
+        // Check if the postId is provided in the request
+        if (!postId) {
+            res.status(400).send('Post ID is required for updating a post.');
+            return;
+        }
+    
+        // Check if the post with the given ID exists
+        const existingPost = PostModel.get(postId);
+        if (!existingPost) {
+            res.status(404).send('Post not found');
+            return;
+        }
+    
+        // Update the existing post
+        const updatedPost = {
+            userId: userId || existingPost.userId,
+            caption: caption || existingPost.caption,
+            image: req.file ? req.file.filename : existingPost.image, // Assuming you're updating the image if a new file is provided
+        };
+    
+        // Perform the update in the model
+        const postUpdated = PostModel.update(postId, updatedPost);
+    
+        // Check if the update was successful
+        if (postUpdated) {
+            res.status(200).send(postUpdated);
+        } else {
+            res.status(500).send('Internal Server Error');
+        }
+    }
+
+    delete(req, res){
+        const userId = req.userId;
+        const postId = req.params.postId;
+        const checkDel = PostModel.deletePost(postId, userId);
+        if(checkDel){
+            return res.status(404).send(checkDel);
         }
         else{
-            return res.status(200).send(allposts);
+            return res.status(200).send("Post has been removed");
+        }
+    }
+
+    commentOnPost(req, res) {
+        const userId = req.query.userId;
+        const postId = req.query.postId;
+        const comment = req.query.comment;
+
+        const errorOnPosted = PostModel.commentOnPost(userId, postId, comment);
+
+        if (errorOnPosted) {
+            res.status(400).send(errorOnPosted);
+        } else {
+            res.status(200).send("Comment posted successfully");
         }
     }
 }
