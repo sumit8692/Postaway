@@ -13,8 +13,9 @@ const basicAuthorizer = (req, res, next) => {
     const decodedCred = Buffer.from(base64Credentials, 'base64').toString('utf8');
 
     console.log(decodedCred);
-    
+
     const creds = decodedCred.split(':');
+    console.log(creds);
 
     const user = UserModel.getAll().find(u => u.email == creds[0] && u.password == creds[1]);
 

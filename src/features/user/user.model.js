@@ -25,4 +25,4 @@ export default class UserModel{
 
 
 
-let users = [];
+let users = [new UserModel(1, "sumit", "sumit8692@gmail.com", "Password")];
