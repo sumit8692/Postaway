@@ -5,36 +5,24 @@ export default class UserModel{
         this.email = email;
         this.password = password;
     }
-    static SignUp(name, email, password){
-        const newUser = new UserModel(name, email, password);
-        newUser.userId = users.length + 1;
+    static SignUp(name, email, password) {
+        const newUser = new UserModel(users.length + 1, name, email, password);
         users.push(newUser);
         return newUser;
     }
+    
 
     static SignIn(email, password){
         const user = users.find( (u) => u.email == email && u.password == password);
         return user;
     }
 
-
-
-    static getall(){
+    static getAll(){
         return users;
-    }
-
-    static add(post){
-        post.id = posts.length + 1;
-        return post
     }
 
 }
 
 
 
-let users = [{
-    userId: 1,
-    name: "Sumit",
-    email: "sumit8692@gmail.com",
-    password: "Password1",
-}];
+let users = [];

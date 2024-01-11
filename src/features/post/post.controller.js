@@ -27,7 +27,7 @@ export default class PostController {
         }
     }
 
-    static getUsersPost(userId){
+    static getUsersPost(req, res){
         const userId = req.query.userId;
         const allposts = PostModel.usersPost(userId);
         if(!userId){
