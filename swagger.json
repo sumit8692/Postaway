@@ -66,9 +66,9 @@
                 ],
                 "parameters": [
                     {
-                        "name": "pagesize",
+                        "name": "page",
                         "in": "query",
-                        "description": "Number of items per page",
+                        "description": "Page number",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -76,9 +76,9 @@
                         }
                     },
                     {
-                        "name": "page",
+                        "name": "pageSize",
                         "in": "query",
-                        "description": "Page number",
+                        "description": "Number of items per page",
                         "required": false,
                         "schema": {
                             "type": "integer",
