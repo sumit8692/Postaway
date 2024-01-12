@@ -2,8 +2,18 @@ import PostModel from "./post.model.js";
 
 export default class PostController {
     getAllPosts(req, res) {
-        const posts = PostModel.getAll();
-        res.status(200).send(posts);
+        
+        const page = parseInt(req.query.page) || 1;
+        const pageSize = parseInt(req.query.pageSize) || 1;
+
+        
+        const offset = (page - 1) * pageSize;
+
+        
+        const paginatedPosts = PostModel.getAll(offset, pageSize);
+
+       
+        res.status(200).send(paginatedPosts);
     }
 
     addPost(req, res) {
