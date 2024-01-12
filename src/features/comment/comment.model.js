@@ -1,9 +1,9 @@
 export default class CommentModel {
-    constructor(id, userId, postId, content) {
-        this.id = id;
+    constructor(comment_id, userId, postId, comment) {
+        this.comment_id = comment_id;
         this.userId = userId;
         this.postId = postId;
-        this.content = content;
+        this.content = comment;
     }
 
     static getAllComments(postId) {
@@ -16,9 +16,9 @@ export default class CommentModel {
         const post = comments.find(p => p.id == postId);
     
         if (post) {
-            // Create a new comment
+            
             const comment = new CommentModel(comments.length + 1, userId, postId, content);
-            comments.push(comment); // Assuming comments is an array where you store comments
+            comments.push(comment); 
     
             return null; // Indicate success
         } else {
@@ -27,8 +27,8 @@ export default class CommentModel {
     }
 
 
-    static update(id, updatedPost) {
-        const postIndex = posts.findIndex((p) => p.id == id &&  p.userId == updatedPost.userId);
+    static update(comment_id, updatedPost) {
+        const postIndex = posts.findIndex((p) => p.comment_id == comment_id &&  p.userId == updatedPost.userId);
 
         if (postIndex === -1) {
             return null; 
@@ -42,8 +42,8 @@ export default class CommentModel {
         return posts[postIndex];
     }
 
-    static deleteComment(postId, userId, id){
-        const commentIndex = comments.findIndex( c => c.postId == postId && c.userId == userId && c.id == id);
+    static deleteComment(postId, userId, comment_id){
+        const commentIndex = comments.findIndex( c => c.postId == postId && c.userId == userId && c.comment_id == comment_id);
 
         if(commentIndex ==-1){
             return "Comment not found";

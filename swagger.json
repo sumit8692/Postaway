@@ -1,186 +1,531 @@
 {
     "openapi": "3.1.0",
     "info": {
-        "version": "1.0.0",
-        "description": "API for Social Media",
-        "title": "Social-media App"
+      "version": "1.0.0",
+      "description": "API for Social Media",
+      "title": "Social-media App"
     },
     "servers": [
-        {
-            "url": "http://localhost:3000"
-        }
+      {
+        "url": "http://localhost:3000"
+      }
     ],
     "components": {
-        "securitySchemes": {
-            "JWT": {
-                "type": "apiKey",
-                "in": "header",
-                "name": "Authorization"
-            }
+      "securitySchemes": {
+        "JWT": {
+          "type": "apiKey",
+          "in": "header",
+          "name": "Authorization"
         }
+      }
     },
     "paths": {
-        "/api/users/signup": {
-            "post": {
-                "tags": ["Signup"],
-                "summary": "Sign Up",
-                "description": "Create a new user account",
-                "requestBody": {
-                    "description": "User details for sign-up",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    }
-                                },
-                                "required": ["name", "email", "password"]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "User created successfully",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "id": 1,
-                                    "name": "John Doe",
-                                    "email": "john.doe@example.com"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/users/signin": {
-            "post": {
-                "tags": ["Login"],
-                "summary": "Login",
-                "description": "User Login to get token",
-                "requestBody": {
-                    "description": "User Credentials",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    }
-                                },
-                                "required": ["email", "password"]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK"
+      "/api/users/signup": {
+        "post": {
+          "tags": ["Signup"],
+          "summary": "Sign Up",
+          "description": "Create a new user account",
+          "requestBody": {
+            "description": "User details for sign-up",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
                     },
-                    "400": {
-                        "description": "Incorrect Credentials"
-                    }
-                }
-            }
-        },
-        "/api/posts": {
-            "get": {
-                "tags": ["Posts"],
-                "summary": "Get User's Posts",
-                "description": "Retrieve posts for the logged-in user",
-                "security": [
-                    {
-                        "JWT": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "example": [
-                                    {
-                                        "id": 1,
-                                        "userId": 4,
-                                        "caption": "Example Post",
-                                        "imageUrl": "http://example.com/image.jpg",
-                                        "comments": [
-                                            {
-                                                "userId": 5,
-                                                "comment": "Nice post!"
-                                            }
-                                        ]
-                                    }
-                                   
-                                ]
-                            }
-                        }
+                    "email": {
+                      "type": "string"
                     },
-                    "404": {
-                        "description": "User not found"
+                    "password": {
+                      "type": "string"
                     }
+                  },
+                  "required": ["name", "email", "password"]
                 }
+              }
             }
-        },
-        "/api/posts/all": {
-            "get": {
-                "tags": ["Posts"],
-                "summary": "Get Posts",
-                "description": "User will get all the posts",
-                "security": [
-                    {
-                        "JWT": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
+          },
+          "responses": {
+            "201": {
+              "description": "User created successfully",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "id": 1,
+                    "name": "John Doe",
+                    "email": "john.doe@example.com"
+                  }
                 }
+              }
             }
-        },
-        "/api/posts/{id}": {
-            "get": {
-                "tags": ["Posts"],
-                "summary": "Get Post by ID",
-                "description": "Retrieve a specific post by its ID",
-                "security": [
-                    {
-                        "JWT": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of the post to retrieve",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
+          }
         }
+      },
+      "/api/users/signin": {
+        "post": {
+          "tags": ["Login"],
+          "summary": "Login",
+          "description": "User Login to get token",
+          "requestBody": {
+            "description": "User Credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["email", "password"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "400": {
+              "description": "Incorrect Credentials"
+            }
+          }
+        }
+      },
+      "/api/posts": {
+        "get": {
+          "tags": ["Posts"],
+          "summary": "Get User's Posts",
+          "description": "Retrieve posts for the logged-in user",
+          "security": [
+            {
+              "JWT": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "example": [
+                    {
+                      "id": 1,
+                      "userId": 4,
+                      "caption": "Example Post",
+                      "imageUrl": "http://example.com/image.jpg",
+                      "comments": [
+                        {
+                          "userId": 5,
+                          "comment": "Nice post!"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "404": {
+              "description": "User not found"
+            }
+          }
+        },
+        "post": {
+          "tags": ["Posts"],
+          "summary": "Add a Post",
+          "description": "Create a new post",
+          "security": [
+            {
+              "JWT": []
+            }
+          ],
+          "requestBody": {
+            "description": "Post details",
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userId": {
+                      "type": "string"
+                    },
+                    "caption": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "required": ["userId", "caption", "image"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Post created successfully",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "userId": "123",
+                    "caption": "Example Post",
+                    "image": "example.jpg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": ["Posts"],
+          "summary": "Update a Post",
+          "description": "Update an existing post",
+          "security": [
+            {
+              "JWT": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of the post to update",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "Updated post details",
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userId": {
+                      "type": "string"
+                    },
+                    "caption": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/posts/all": {
+        "get": {
+          "tags": ["Posts"],
+          "summary": "Get Posts",
+          "description": "User will get all the posts",
+          "security": [
+            {
+              "JWT": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/api/posts/{id}": {
+        "get": {
+          "tags": ["Posts"],
+          "summary": "Get Post by ID",
+          "description": "Retrieve a specific post by its ID",
+          "security": [
+            {
+              "JWT": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of the post to retrieve",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        },
+        "delete": {
+          "tags": ["Posts"],
+          "summary": "Delete a Post",
+          "description": "Delete an existing post",
+          "security": [
+            {
+              "JWT": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of the post to delete",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Post deleted successfully"
+            },
+            "404": {
+              "description": "Post not found"
+            }
+          }
+        }
+      },
+      "/like/{postId}": {
+        "get": {
+          "tags": ["Likes"],
+          "summary": "Get Likes for a Post",
+          "description": "Retrieve likes for a specific post.",
+          "parameters": [
+            {
+              "name": "postId",
+              "in": "path",
+              "description": "ID of the post to retrieve likes for",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "postWithLike": {
+                      "postId": "123",
+                      "likes": [
+                        {
+                          "userId": "456",
+                          "userName": "John Doe"
+                        },
+                        {
+                          "userId": "789",
+                          "userName": "Jane Doe"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/like/toggle/{postId}": {
+        "get": {
+          "tags": ["Likes"],
+          "summary": "Toggle Like Status",
+          "description": "Toggle like status for a specific post.",
+          "parameters": [
+            {
+              "name": "postId",
+              "in": "path",
+              "description": "ID of the post to toggle like status for",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Like status toggled successfully",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "message": "Like status toggled for postId {postId} by userId {userId}",
+                    "isLiked": true
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "error": "postId is required"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/comment/{postId}": {
+        "get": {
+          "tags": ["Comments"],
+          "summary": "Get All Comments",
+          "description": "Retrieve all comments for a specific post",
+          "parameters": [
+            {
+              "name": "postId",
+              "in": "path",
+              "description": "ID of the post to retrieve comments for",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "example": [
+                    {
+                      "commentId": 1,
+                      "userId": 4,
+                      "postId": "123",
+                      "content": "Nice post!"
+                    }
+                  ]
+                }
+              }
+            },
+            "404": {
+              "description": "No comments found for the specified postId"
+            }
+          }
+        },
+        "post": {
+          "tags": ["Comments"],
+          "summary": "Add Comment",
+          "description": "Add a new comment to a post",
+          "parameters": [
+            {
+              "name": "postId",
+              "in": "path",
+              "description": "ID of the post to add a comment to",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "Comment details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "content": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["content"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Comment added successfully"
+            },
+            "404": {
+              "description": "Server Error"
+            }
+          }
+        }
+      },
+      "/comment/{commentId}": {
+        "delete": {
+          "tags": ["Comments"],
+          "summary": "Delete Comment",
+          "description": "Delete a comment",
+          "parameters": [
+            {
+              "name": "commentId",
+              "in": "path",
+              "description": "ID of the comment to delete",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Comment deleted successfully"
+            },
+            "404": {
+              "description": "Comment not found"
+            }
+          }
+        },
+        "put": {
+          "tags": ["Comments"],
+          "summary": "Update Comment",
+          "description": "Update an existing comment",
+          "parameters": [
+            {
+              "name": "commentId",
+              "in": "path",
+              "description": "ID of the comment to update",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "Updated comment details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "content": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Comment updated successfully"
+            },
+            "404": {
+              "description": "Comment not found"
+            }
+          }
+        }
+      }
     }
-}
+  }
+  

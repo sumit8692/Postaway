@@ -16,13 +16,6 @@ export default class PostController {
         res.status(200).send(paginatedPosts);
     }
 
-    addPost(req, res) {
-        const { userId, caption } = req.body;
-        const newPost = { userId, caption, image: req.file.filename };
-        const postCreated = PostModel.add(newPost);
-        res.status(201).send(postCreated);
-    }
-
     getPostById(req, res) {
         const id = req.params.id;
         const post = PostModel.get(id);
@@ -43,6 +36,13 @@ export default class PostController {
             const userPosts = PostModel.usersPost(userId);
             res.status(200).send(userPosts);
         }
+    }
+
+    addPost(req, res) {
+        const { userId, caption } = req.body;
+        const newPost = { userId, caption, image: req.file.filename };
+        const postCreated = PostModel.add(newPost);
+        res.status(201).send(postCreated);
     }
 
      updatePost(req, res) {
@@ -92,17 +92,4 @@ export default class PostController {
         }
     }
 
-    commentOnPost(req, res) {
-        const userId = req.query.userId;
-        const postId = req.query.postId;
-        const comment = req.query.comment;
-
-        const errorOnPosted = PostModel.commentOnPost(userId, postId, comment);
-
-        if (errorOnPosted) {
-            res.status(400).send(errorOnPosted);
-        } else {
-            res.status(200).send("Comment posted successfully");
-        }
-    }
 }
