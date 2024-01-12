@@ -21,13 +21,10 @@ server.use("/api/posts", jwtAuth, PostRouter);
 server.use("/api/users", userRouter);
 server.use("/api/likes", jwtAuth, likeRouter);
 server.use("/api/comments", jwtAuth, commentrouter)
-server.use((req, res) => {
-    res.send("Welcome to Ecommerce API's");
-});
 
 
 server.use((req, res) => {
-    res.status(404).send("API not found");
+    res.status(404).send("API not found. Please check our Documentation for more inforamation at localhost:3000/api-docs");
 })
 
 server.listen(3000, () => {
