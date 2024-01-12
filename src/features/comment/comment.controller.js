@@ -36,8 +36,9 @@ export default class CommentController {
 
     delete(req, res){
         const userId = req.userId;
+        const commentId = req.query.commentId;
         const postId = req.params.postId;
-        const checkDel = CommentModel.deleteComment(postId, userId);
+        const checkDel = CommentModel.deleteComment(postId, userId, commentId);
         if(checkDel){
             return res.status(404).send(checkDel);
         }
@@ -48,6 +49,7 @@ export default class CommentController {
 
     update(req, res){
         const updatedPost = req.body;
+        updatedPost.userId = req.userId;
         const postId = req.params.postId;
         
         const checkupdate = CommentModel.update(postId, updatedPost);
@@ -56,10 +58,8 @@ export default class CommentController {
             return res.status(404).send(checkDel);
         }
         else{
-            return res.status(200).send("Post has been updated");
+            return res.status(200).send("Comment has been updated");
         }
     }
     
-   
-
 }

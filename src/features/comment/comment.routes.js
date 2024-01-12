@@ -9,7 +9,7 @@ const commentController = new CommentController;
 commentrouter.get('/:postId', commentController.getAllComments);
 commentrouter.post('/:postId', commentController.addComment);
 commentrouter.delete('/:commentId', commentController.delete);
-commentrouter.put('/:commentId', commentController.update);
+commentrouter.put('/:postId', commentController.update);
 
 
 export default commentrouter;

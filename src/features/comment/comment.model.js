@@ -28,18 +28,18 @@ export default class CommentModel {
 
 
     static update(comment_id, updatedPost) {
-        const postIndex = posts.findIndex((p) => p.comment_id == comment_id &&  p.userId == updatedPost.userId);
+        const postIndex = comments.findIndex((p) => p.comment_id == comment_id &&  p.userId == updatedPost.userId);
 
         if (postIndex === -1) {
             return null; 
         }
 
-        posts[postIndex] = {
-            ...posts[postIndex],
+        comments[postIndex] = {
+            ...comments[postIndex],
             ...updatedPost,
         };
 
-        return posts[postIndex];
+        return comments[postIndex];
     }
 
     static deleteComment(postId, userId, comment_id) {
@@ -57,6 +57,6 @@ export default class CommentModel {
 
 let comments = [new CommentModel(1, 1, 1, "Mast hai bhai"),
 new CommentModel(2, 2, 1, "Mast hai bhai2"),
-new CommentModel(3, 3, 1, "Mast hai bhai3"),
-new CommentModel(4, 4, 1, "Mast hai bhai4")
+new CommentModel(3, 1, 1, "Mast hai bhai3"),
+new CommentModel(4, 1, 1, "Mast hai bhai4")
 ];

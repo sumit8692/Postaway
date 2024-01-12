@@ -286,7 +286,8 @@
               "description": "ID of the post to delete",
               "required": true,
               "schema": {
-                "type": "string"
+                "type": "integer",
+                "format": "int32"
               }
             }
           ],
@@ -452,7 +453,7 @@
             }
           },
           "responses": {
-            "200": {
+            "201": {
               "description": "Comment added successfully"
             },
             "404": {
@@ -475,6 +476,11 @@
               "schema": {
                 "type": "string"
               }
+            }
+          ],
+          "security": [
+            {
+              "JWT": []
             }
           ],
           "responses": {
@@ -501,6 +507,11 @@
               }
             }
           ],
+          "security": [
+            {
+              "JWT": []
+            }
+          ],
           "requestBody": {
             "description": "Updated comment details",
             "content": {
@@ -511,7 +522,8 @@
                     "content": {
                       "type": "string"
                     }
-                  }
+                  },
+                  "required": ["content"]
                 }
               }
             }
