@@ -22,7 +22,7 @@ export default class LikeController {
     }
 
     get(req, res) {
-        const postId = req.params.postId;
+        const postId = reqss.params.postId;
         const postWithLike = LikeModel.getAll(postId);
         return res.status(200).send(postWithLike);
     }

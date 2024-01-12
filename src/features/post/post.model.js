@@ -1,4 +1,4 @@
-import UserModel from "../user/user.model.js";
+import { ApplicationError } from "../../error-handler/applicationError.js";
 
 class PostModel {
     constructor(id, userId, caption, imageUrl) {
@@ -27,24 +27,6 @@ class PostModel {
         return posts.filter((p) => p.userId == userId);
     }
 
-    static commentOnPost(userId, postId, comment) {
-        const user = UserModel.getAll().find((u) => u.userId == userId);
-        if (!user) {
-            return "User not found";
-        }
-
-        const post = posts.find((p) => p.id == postId);
-
-        if (!post) {
-            return "Post not found";
-        }
-
-        post.comments.push({
-            userId: userId,
-            comment: comment
-        });
-        return;
-    }
 
     static update(id, updatedPost) {
         const postIndex = posts.findIndex((p) => p.id == id);
@@ -63,9 +45,10 @@ class PostModel {
 
     static deletePost(postId, userId) {
         const postIndex = posts.findIndex(p => p.postId == postId && p.userId == userId);
-
+    
         if (postIndex === -1) {
-            return "Post not found";
+            throw new ApplicationError("Post not found", 404);
+           
         } else {
             posts.splice(postIndex, 1);
         }

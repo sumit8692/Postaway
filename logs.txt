@@ -1,0 +1,7 @@
+{"level":"info","message":"{} - GET /api/likes/1","service":"request-logging"}
+{"level":"info","message":"{\"email\":\"sumit@gmail.com\",\"password\":\"Password\"} - POST /api/users/signin","service":"request-logging"}
+{"level":"info","message":"{} - GET /api/likes/1","service":"request-logging"}
+{"level":"info","message":"{} - GET /api/likes/1","service":"request-logging"}
+{"level":"info","message":"{} - GET /api/likes/1","service":"request-logging"}
+{"level":"info","message":"{} - GET /api/likes/1","service":"request-logging"}
+{"level":"info","message":"{} - GET /api/likes/1","service":"request-logging"}

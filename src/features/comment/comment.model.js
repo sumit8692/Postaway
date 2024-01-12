@@ -20,9 +20,9 @@ export default class CommentModel {
             const comment = new CommentModel(comments.length + 1, userId, postId, content);
             comments.push(comment); 
     
-            return null; // Indicate success
+            return null; 
         } else {
-            return "Post not found";
+            throw new Error("Post not found", 404);
         }
     }
 
@@ -42,16 +42,14 @@ export default class CommentModel {
         return posts[postIndex];
     }
 
-    static deleteComment(postId, userId, comment_id){
-        const commentIndex = comments.findIndex( c => c.postId == postId && c.userId == userId && c.comment_id == comment_id);
+    static deleteComment(postId, userId, comment_id) {
+        const commentIndex = comments.findIndex(c => c.postId == postId && c.userId == userId && c.comment_id == comment_id);
 
-        if(commentIndex ==-1){
-            return "Comment not found";
+        if (commentIndex === -1) {
+            throw new Error("Comment not found", 404);
+        } else {
+            comments.splice(commentIndex, 1);
         }
-        else{
-            posts.splice(commentIndex, 1);
-        }
-
     }
 
 
