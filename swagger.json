@@ -20,6 +20,49 @@
         }
     },
     "paths": {
+        "/api/users/signup": {
+            "post": {
+                "tags": ["Signup"],
+                "summary": "Sign Up",
+                "description": "Create a new user account",
+                "requestBody": {
+                    "description": "User details for sign-up",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["name", "email", "password"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "id": 1,
+                                    "name": "John Doe",
+                                    "email": "john.doe@example.com"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/users/signin": {
             "post": {
                 "tags": ["Login"],
@@ -54,6 +97,45 @@
                 }
             }
         },
+        "/api/posts": {
+            "get": {
+                "tags": ["Posts"],
+                "summary": "Get User's Posts",
+                "description": "Retrieve posts for the logged-in user",
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "userId": 4,
+                                        "caption": "Example Post",
+                                        "imageUrl": "http://example.com/image.jpg",
+                                        "comments": [
+                                            {
+                                                "userId": 5,
+                                                "comment": "Nice post!"
+                                            }
+                                        ]
+                                    }
+                                   
+                                ]
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
         "/api/posts/all": {
             "get": {
                 "tags": ["Posts"],
@@ -64,22 +146,29 @@
                         "JWT": []
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/posts/{id}": {
+            "get": {
+                "tags": ["Posts"],
+                "summary": "Get Post by ID",
+                "description": "Retrieve a specific post by its ID",
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
                 "parameters": [
                     {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32"
-                        }
-                    },
-                    {
-                        "name": "pageSize",
-                        "in": "query",
-                        "description": "Number of items per page",
-                        "required": false,
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the post to retrieve",
+                        "required": true,
                         "schema": {
                             "type": "integer",
                             "format": "int32"

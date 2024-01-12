@@ -35,7 +35,7 @@ export default class PostController {
     }
 
     getUsersPost(req, res) {
-        const userId = req.query.userId;
+        const userId = req.userId;
         
         if (!userId) {
             res.status(404).send("User not found");
