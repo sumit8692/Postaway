@@ -15,7 +15,15 @@ import { ApplicationError } from './src/error-handler/applicationError.js';
 
 const server = express();
 
-server.use("/api-docs", swagger.serve, swagger.setup(apiDocs));
+const swaggerOptions = {
+  customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css',
+  customJs: [
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.js'
+  ]
+};
+
+server.use("/api-docs", swagger.serve, swagger.setup(apiDocs, swaggerOptions));
 
 server.get("/", (req, res) => {
     res.redirect("/api-docs");
