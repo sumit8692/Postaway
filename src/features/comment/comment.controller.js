@@ -1,5 +1,6 @@
-// LikeController
+// CommentController
 import CommentModel from "./comment.model.js";
+import { ApplicationError } from "../../error-handler/applicationError.js";
 
 export default class CommentController {
 
@@ -18,48 +19,51 @@ export default class CommentController {
         }
     }
 
-    addComment(req, res){
-        const content = req.body;
-        const userId = req.userId;
-        const postId = req.params.postId;
+    addComment(req, res) {
+        try {
+            const { content } = req.body;
+            const userId = req.userId;
+            const postId = req.params.postId;
 
-        const checkAdded = CommentModel.addComment(userId, postId, content);
+            if (!content) {
+                return res.status(400).send("content is required");
+            }
 
-        if(checkAdded){
-            res.status(404).send("Server Error");
-        }
-        else{
-            res.status(200).send("Comment Added");
-        }
-
-    }
-
-    delete(req, res){
-        const userId = req.userId;
-        const commentId = req.query.commentId;
-        const postId = req.params.postId;
-        const checkDel = CommentModel.deleteComment(postId, userId, commentId);
-        if(checkDel){
-            return res.status(404).send(checkDel);
-        }
-        else{
-            return res.status(200).send("Post has been removed");
+            const comment = CommentModel.addComment(userId, postId, content);
+            return res.status(201).json(comment);
+        } catch (err) {
+            const status = err.code || 404;
+            return res.status(status).send(err.message || "Server Error");
         }
     }
 
-    update(req, res){
-        const updatedPost = req.body;
-        updatedPost.userId = req.userId;
-        const postId = req.params.postId;
-        
-        const checkupdate = CommentModel.update(postId, updatedPost);
-
-        if(checkupdate==-1){
-            return res.status(404).send(checkDel);
-        }
-        else{
-            return res.status(200).send("Comment has been updated");
+    delete(req, res) {
+        try {
+            const userId = req.userId;
+            const commentId = req.params.commentId;
+            CommentModel.deleteComment(userId, commentId);
+            return res.status(200).send("Comment deleted successfully");
+        } catch (err) {
+            const status = err.code || 500;
+            return res.status(status).send(err.message || "Server Error");
         }
     }
-    
+
+    update(req, res) {
+        try {
+            const { content } = req.body;
+            const userId = req.userId;
+            const commentId = req.params.commentId;
+
+            if (!content) {
+                return res.status(400).send("content is required");
+            }
+
+            const comment = CommentModel.update(commentId, userId, content);
+            return res.status(200).json(comment);
+        } catch (err) {
+            const status = err.code || 500;
+            return res.status(status).send(err.message || "Server Error");
+        }
+    }
 }

@@ -12,10 +12,10 @@ postrouter.get('/', postController.getUsersPost);
 
 
 
-postrouter.post('/', upload.single('imageUrl'), postController.addPost);
+postrouter.post('/', upload.single('image'), postController.addPost);
 
 
-postrouter.put('/:id', upload.single('imageUrl'), postController.updatePost);
+postrouter.put('/:id', upload.single('image'), postController.updatePost);
 
 
 postrouter.delete('/:id', postController.delete)

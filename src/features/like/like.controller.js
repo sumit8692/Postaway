@@ -1,5 +1,6 @@
 // LikeController
 import LikeModel from "./like.model.js";
+import UserModel from "../user/user.model.js";
 
 export default class LikeController {
 
@@ -22,8 +23,23 @@ export default class LikeController {
     }
 
     get(req, res) {
-        const postId = reqss.params.postId;
-        const postWithLike = LikeModel.getAll(postId);
-        return res.status(200).send(postWithLike);
+        const postId = req.params.postId;
+        const rawLikes = LikeModel.getAll(postId);
+        const users = UserModel.getAll();
+        
+        const mappedLikes = rawLikes.map(like => {
+            const user = users.find(u => u.userId == like.userId);
+            return {
+                userId: like.userId,
+                userName: user ? user.name : "Unknown User"
+            };
+        });
+
+        return res.status(200).json({
+            postWithLike: {
+                postId: postId,
+                likes: mappedLikes
+            }
+        });
     }
 }

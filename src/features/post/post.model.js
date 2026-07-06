@@ -14,9 +14,14 @@ class PostModel {
     }
 
     static add(post) {
-        post.id = posts.length + 1;
-        posts.push(post);
-        return post;
+        const newPost = new PostModel(
+            posts.length + 1,
+            post.userId,
+            post.caption,
+            post.imageUrl
+        );
+        posts.push(newPost);
+        return newPost;
     }
 
     static get(id) {
@@ -44,14 +49,15 @@ class PostModel {
     }
 
     static deletePost(postId, userId) {
-        const postIndex = posts.findIndex(p => p.postId == postId && p.userId == userId);
+        const postIndex = posts.findIndex(p => p.id == postId);
     
         if (postIndex === -1) {
             throw new ApplicationError("Post not found", 404);
-           
-        } else {
-            posts.splice(postIndex, 1);
         }
+        if (posts[postIndex].userId != userId) {
+            throw new ApplicationError("You are not authorized to delete this post", 403);
+        }
+        posts.splice(postIndex, 1);
     }
 }
 

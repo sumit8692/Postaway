@@ -1,4 +1,109 @@
-Postaway
-An API for a social media application to register and authenticate users, create a post, and to like and comment on that post.
+# 🚀 Postaway — Social Media REST API
 
+[![Node.js Version](https://img.shields.io/badge/node.js-%3E%3D20.0.0-brightgreen.svg?style=flat-square&logo=node.js)](https://nodejs.org/)
+[![Express.js Framework](https://img.shields.io/badge/framework-express-blue.svg?style=flat-square&logo=express)](https://expressjs.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![API Documentation](https://img.shields.io/badge/docs-swagger-green.svg?style=flat-square&logo=swagger)](http://localhost:3000/api-docs)
 
+Postaway is a high-performance, secure backend API for a social media networking application. It provides everything necessary to build a complete social experience—including secure JWT authentication, structured post sharing (complete with image uploads), active comment threads, and post-liking systems.
+
+---
+
+## ⚡ Core Features
+
+- **🔐 Secure Authentication:** Seamless User Signup and Signin yielding stateless JWT token authentication.
+- **📝 Post Sharing:** Complete CRUD functionality for social posts. Supports multi-part image uploads utilizing `multer`.
+- **💬 Comment Threads:** Add, edit, delete, and view comment sections attached to specific posts.
+- **❤️ Like System:** Interactive post liking where users can toggle likes and retrieve detailed lists of liking users.
+- **🛡️ Secure Middleware:** Restricts endpoints to logged-in users and automatically censors sensitive fields (like passwords) from system logs.
+- **📋 Automated Logging:** Implements an automated audit logging system powered by `winston`.
+- **📖 OpenAPI / Swagger Docs:** Beautiful, interactive API documentation served directly at `/api-docs`.
+
+---
+
+## 📁 Repository Structure
+
+```text
+Postaway/
+├── src/
+│   ├── error-handler/
+│   │   └── applicationError.js     # Standardized custom error class
+│   ├── features/
+│   │   ├── comment/                # Router, Controller, Model for comments
+│   │   ├── like/                   # Router, Controller, Model for likes
+│   │   ├── post/                   # Router, Controller, Model for posts
+│   │   └── user/                   # Router, Controller, Model for users
+│   └── middlewares/
+│       ├── fileupload.middleware.js # Multer configuration for image files
+│       ├── jwt.middleware.js        # Token authentication validation
+│       └── logger.middleware.js     # Winston audit logger configuration
+├── upload/                          # Uploaded image files storage
+├── server.js                        # App initialization and routing setup
+├── swagger.json                     # OpenAPI specification definitions
+└── package.json                     # Project configurations & dependencies
+```
+
+---
+
+## ⚙️ Installation & Quickstart
+
+Follow these steps to get the server running locally:
+
+### 1. Prerequisites
+Make sure you have Node.js (version 20 or higher) installed on your system.
+
+### 2. Install Dependencies
+Clone the repository and run the package installer:
+```bash
+npm install
+```
+
+### 3. Run the Development Server
+Launch the application:
+```bash
+npm start
+```
+The server will boot and listen at `http://localhost:3000`.
+
+### 4. Open API Documentation
+Visit the interactive Swagger UI to test the endpoints:
+👉 **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**
+
+---
+
+## 🗺️ API Endpoint Map
+
+### 👤 User Authentication (`/api/users`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| `POST` | `/signup` | Registers a new user account | ❌ |
+| `POST` | `/signin` | Authenticates credentials and returns a JWT token | ❌ |
+
+### 📬 Post Management (`/api/posts`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| `GET` | `/all` | Fetches all posts (paginated via `page` and `pageSize` query parameters) | ✔️ |
+| `GET` | `/:id` | Fetches a single post by ID | ✔️ |
+| `GET` | `/` | Fetches all posts created by the logged-in user | ✔️ |
+| `POST` | `/` | Creates a new post (expects multipart form data: `caption` and `image`) | ✔️ |
+| `PUT` | `/:id` | Updates a post's caption or image (owner only) | ✔️ |
+| `DELETE` | `/:id` | Deletes a post (owner only) | ✔️ |
+
+### ❤️ Likes (`/like`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| `GET` | `/:postId` | Fetches all active likes for a specific post | ❌ |
+| `GET` | `/toggle/:postId` | Toggles the like status of a post for the authenticated user | ✔️ |
+
+### 💬 Comments (`/comment`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| `GET` | `/:postId` | Fetches all comments for a specific post | ❌ |
+| `POST` | `/:postId` | Adds a new comment to a post | ✔️ |
+| `PUT` | `/:commentId` | Updates an existing comment's content (owner only) | ✔️ |
+| `DELETE` | `/:commentId` | Deletes a comment from a post (owner only) | ✔️ |
+
+---
+
+## 📜 License
+This project is open-source and licensed under the [MIT License](LICENSE).

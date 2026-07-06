@@ -39,40 +39,41 @@ export default class PostController {
     }
 
     addPost(req, res) {
-        const { userId, caption } = req.body;
-        const newPost = { userId, caption, image: req.file.filename };
-        const postCreated = PostModel.add(newPost);
+        const userId = req.userId;
+        const { caption } = req.body;
+        if (!req.file) {
+            return res.status(400).send("Image is required");
+        }
+        const imageUrl = req.file.filename;
+        const postCreated = PostModel.add({ userId, caption, imageUrl });
         res.status(201).send(postCreated);
     }
 
-     updatePost(req, res) {
-        const postId = req.params.id; // Assuming the post ID is in the URL parameters
-        const { userId, caption } = req.body;
+    updatePost(req, res) {
+        const postId = req.params.id;
+        const { caption } = req.body;
     
-        // Check if the postId is provided in the request
         if (!postId) {
-            res.status(400).send('Post ID is required for updating a post.');
-            return;
+            return res.status(400).send('Post ID is required for updating a post.');
         }
     
-        // Check if the post with the given ID exists
         const existingPost = PostModel.get(postId);
         if (!existingPost) {
-            res.status(404).send('Post not found');
-            return;
+            return res.status(404).send('Post not found');
+        }
+
+        if (existingPost.userId != req.userId) {
+            return res.status(403).send("You are not authorized to update this post");
         }
     
-        // Update the existing post
         const updatedPost = {
-            userId: userId || existingPost.userId,
+            userId: existingPost.userId,
             caption: caption || existingPost.caption,
-            image: req.file ? req.file.filename : existingPost.image, // Assuming you're updating the image if a new file is provided
+            imageUrl: req.file ? req.file.filename : existingPost.imageUrl,
         };
     
-        // Perform the update in the model
         const postUpdated = PostModel.update(postId, updatedPost);
     
-        // Check if the update was successful
         if (postUpdated) {
             res.status(200).send(postUpdated);
         } else {
@@ -82,14 +83,9 @@ export default class PostController {
 
     delete(req, res){
         const userId = req.userId;
-        const postId = req.params.postId;
-        const checkDel = PostModel.deletePost(postId, userId);
-        if(checkDel){
-            return res.status(404).send(checkDel);
-        }
-        else{
-            return res.status(200).send("Post has been removed");
-        }
+        const postId = req.params.id;
+        PostModel.deletePost(postId, userId);
+        return res.status(200).send("Post has been removed");
     }
 
 }

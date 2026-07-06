@@ -7,11 +7,11 @@ export default class LikeModel {
     }
 
     static getAll(postId) {
-        return likes.filter(l => l.postId == postId);
+        return likes.filter(l => l.postId == postId && l.isLiked === true);
     }
 
     static toggleLikes(userId, postId) {
-        const existingLike = likes.find(l => l.postId == postId);
+        const existingLike = likes.find(l => l.postId == postId && l.userId == userId);
 
         if (existingLike) {
             // If the like already exists, toggle its status
@@ -27,6 +27,6 @@ export default class LikeModel {
 }
 
 let likes = [
-    new LikeModel(1, true),
-    new LikeModel(2, false)
+    new LikeModel(1, 1, true),
+    new LikeModel(2, 2, true)
 ];

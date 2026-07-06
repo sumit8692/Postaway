@@ -14,7 +14,7 @@ const logger = winston.createLogger({
 
 const loggerMiddleware = async (req, res, next) => {
     // 1. Log request body.
-    if (!req.url.includes('signin') || !req.url.includes('signup')) {
+    if (!req.url.includes('signin') && !req.url.includes('signup')) {
         const requestBody = req.body ? JSON.stringify(req.body) : "No request body";
         const logData = `${requestBody} - ${req.method} ${req.url}`;
         logger.info(logData);
