@@ -37,7 +37,7 @@ Postaway/
 │       ├── fileupload.middleware.js # Multer configuration for image files
 │       ├── jwt.middleware.js        # Token authentication validation
 │       └── logger.middleware.js     # Winston audit logger configuration
-├── upload/                          # Uploaded image files storage
+├── upload/                          # Auto-created at runtime — stores uploaded images
 ├── server.js                        # App initialization and routing setup
 ├── swagger.json                     # OpenAPI specification definitions
 └── package.json                     # Project configurations & dependencies
