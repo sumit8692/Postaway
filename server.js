@@ -16,6 +16,11 @@ import { ApplicationError } from './src/error-handler/applicationError.js';
 const server = express();
 
 server.use("/api-docs", swagger.serve, swagger.setup(apiDocs));
+
+server.get("/", (req, res) => {
+    res.redirect("/api-docs");
+});
+
 server.use(bodyParser.json());
 
 server.use(loggerMiddleware);
@@ -35,7 +40,7 @@ server.use((err, req, res, next) => {
 });
 
 server.use((req, res) => {
-    res.status(404).send("API not found. Please check our Documentation for more inforamation at localhost:3000/api-docs");
+    res.status(404).send(`API not found. Please check our Documentation at http://${req.headers.host}/api-docs`);
 });
 
 server.listen(3000, () => {
